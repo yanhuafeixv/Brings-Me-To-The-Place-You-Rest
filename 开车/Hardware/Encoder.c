@@ -57,17 +57,23 @@ void Encoder_Init2(void)
     TIM_EncoderInterfaceConfig(TIM4, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);
     TIM_Cmd(TIM4, ENABLE); 
 }
-int16_t Encoder_Get1(void)
+int16_t Encoder_Get_R(void)
 {
 	int16_t Temp;
 	Temp = TIM_GetCounter(TIM3);
 	TIM_SetCounter(TIM3, 0);
 	return Temp;
 }
-int16_t Encoder_Get2(void)
+int16_t Encoder_Get_L(void)
 {
     int16_t Temp;
     Temp = TIM_GetCounter(TIM4); 
     TIM_SetCounter(TIM4, 0); 
     return Temp;
+}
+
+void Encoder_Init(void)
+{
+	Encoder_Init1();
+	Encoder_Init2();
 }

@@ -28,13 +28,8 @@
 .\objects\main.o: .\Library\stm32f10x_usart.h
 .\objects\main.o: .\Library\stm32f10x_wwdg.h
 .\objects\main.o: .\Library\misc.h
-.\objects\main.o: .\Hardware\Encoder.h
+.\objects\main.o: .\System\Menu.h
+.\objects\main.o: .\Hardware\Track.h
 .\objects\main.o: .\Hardware\Motor.h
-.\objects\main.o: .\Hardware\OLED.h
-.\objects\main.o: .\Hardware\PWM.h
-.\objects\main.o: .\Hardware\Serial.h
-.\objects\main.o: D:\xiazai\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\main.o: .\Hardware\Key.h
+.\objects\main.o: .\System\Speed.h
 .\objects\main.o: .\System\Delay.h
-.\objects\main.o: .\System\Timer.h
-.\objects\main.o: D:\xiazai\ARM\ARMCC\Bin\..\include\stdlib.h

@@ -740,6 +740,16 @@
               <FileType>5</FileType>
               <FilePath>.\Hardware\Key.h</FilePath>
             </File>
+            <File>
+              <FileName>Track.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\Track.c</FilePath>
+            </File>
+            <File>
+              <FileName>Track.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\Track.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -764,6 +774,26 @@
               <FileName>Timer.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\System\Timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>Speed.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\Speed.c</FilePath>
+            </File>
+            <File>
+              <FileName>Speed.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\Speed.h</FilePath>
+            </File>
+            <File>
+              <FileName>Menu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\Menu.c</FilePath>
+            </File>
+            <File>
+              <FileName>Menu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\Menu.h</FilePath>
             </File>
           </Files>
         </Group>
