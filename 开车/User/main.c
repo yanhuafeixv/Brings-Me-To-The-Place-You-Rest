@@ -22,13 +22,16 @@ int main(void)
 	  //Motor_SetSpeeds(100,100);
 	  //Delay_ms(5000);
 	  //Motor_SetSpeeds(0,0);
+	//Motor_SetSpeeds(100,100);
+	//Delay_ms(5000);
+	//Motor_SetSpeeds(50,50);
     
     while(1) {
         Menu_Process();
 				if(start_flag) {
             status = Track_GetStatus();
             Speed_TrackingControl(status);  // 使用新的函数名
-            Speed_PID_Update();  // 更新PID控制
+            //Speed_PID_Update();  // 更新PID控制
         }
         
         Delay_ms(10);

@@ -6,14 +6,14 @@
 #include "Delay.h"
 
 // PID参数 - 使用您在Menu.h中定义的参数
-#define KP 25.0f
-#define KI 0.1f
-#define KD 15.0f
+#define KP 3.0f
+#define KI 0.01f
+#define KD 25.0f
 
 // 速度参数 - 使用您在Menu.h中定义的参数
-#define NORMAL 40
-#define TURN 50  
-#define SLOW 30
+#define NORMAL 70
+#define TURN 80  
+#define SLOW 60
 
 // PID参数
 typedef struct {
@@ -41,6 +41,7 @@ extern PID_Controller pid_left, pid_right;
 extern Speed_Params speed_params;
 extern int16_t speed_left, speed_right;
 extern uint32_t system_time;
+uint16_t last_status;
 
 // 全局变量定义
 PID_Controller pid_left, pid_right;
@@ -190,60 +191,114 @@ void Speed_SetTarget(int16_t left, int16_t right)
     pid_right.target = right;
 }
 
-// 循迹控制
+// 循迹控制 - 带智能后退
 void Speed_TrackingControl(uint16_t track_status)
 {
-    int16_t left, right;
+    int16_t left_speed, right_speed;
     
-    // 根据传感器状态设置目标速度
+    // 记录上一次有效状态（排除全0状态）
+    if(track_status != 0){
+        last_status = track_status;
+    }
+    
+    // 根据传感器状态直接设置电机速度
     switch(track_status) {
-        case 0:     // 0000 - 停止
-            left = -10;
-            right = -10;
+        case 0:     // 0000 - 智能后退
+            switch(last_status){
+                case 1:     // 0001 - 上次大右转，后退时左转寻找
+                    left_speed = 40;
+                    right_speed = -40;
+                    break;
+                    
+                case 10:    // 0010 - 上次轻微右转，后退时左转寻找//
+                    left_speed = 30;
+                    right_speed = 10;
+                    break;
+                    
+                case 11:    // 0011 - 上次急右转，后退时强力左转//
+                    left_speed = 25;
+                    right_speed = -50;
+                    break;
+                    
+                case 100:   // 0100 - 上次轻微左转，后退时右转寻找//
+                    left_speed = 10;
+                    right_speed = 30;
+                    break;
+                    
+                case 110:   // 0110 - 上次直行，后退时原地旋转//
+                    left_speed = -40;
+                    right_speed = 40;
+                    break;
+                    
+                case 1000:  // 1000 - 上次大左转，后退时右转寻找
+                    left_speed = -40;
+                    right_speed = 40;
+                    break;
+                    
+                case 1100:  // 1100 - 上次急左转，后退时强力右转//
+                    left_speed = -50;
+                    right_speed = 25;
+                    break;
+                    
+                default:    // 默认后退策略
+                    left_speed = -30;
+                    right_speed = -30;
+                    break;
+            }
             break;
+            
         case 1:     // 0001 - 大右转
-            left = speed_params.Turn;
-            right = 0;
+            left_speed = 70;
+            right_speed = -20;
             break;
+            
         case 10:    // 0010 - 轻微右转
-            left = speed_params.Normal + 15;
-            right = speed_params.Normal - 15;
+            left_speed = speed_params.Normal + 15;
+            right_speed = speed_params.Normal - 15;
             break;
+            
         case 11:    // 0011 - 急右转
-            left = speed_params.Normal + 25;
-            right = speed_params.Normal - 25;
+            left_speed = speed_params.Normal + 35;
+            right_speed = speed_params.Normal - 50;
             break;
+            
         case 100:   // 0100 - 轻微左转
-            left = speed_params.Normal - 15;
-            right = speed_params.Normal + 15;
+            left_speed = speed_params.Normal - 15;
+            right_speed = speed_params.Normal + 15;
             break;
+            
         case 110:   // 0110 - 直行
-            left = speed_params.Normal;
-            right = speed_params.Normal;
+            left_speed = 100;
+            right_speed = 100;
             break;
+            
         case 1000:  // 1000 - 大左转
-            left = 0;
-            right = speed_params.Turn;
+            left_speed = -20;
+            right_speed = 70;
             break;
+            
         case 1100:  // 1100 - 急左转
-            left = speed_params.Normal - 25;
-            right = speed_params.Normal + 25;
+            left_speed = speed_params.Normal - 50;
+            right_speed = speed_params.Normal + 35;
             break;
+            
         case 1111:  // 1111 - 十字路口
-            left = speed_params.Normal;
-            right = speed_params.Normal;
+            left_speed = speed_params.Normal;
+            right_speed = speed_params.Normal;
             break;
+            
         default:    // 其他情况直行
-            left = speed_params.Normal;
-            right = speed_params.Normal;
+            left_speed = speed_params.Normal;
+            right_speed = speed_params.Normal;
             break;
     }
     
     // 速度安全限制
-    if(left > speed_params.Slow) left = speed_params.Slow;
-    if(left < -speed_params.Slow) left = -speed_params.Slow;
-    if(right > speed_params.Slow) right = speed_params.Slow;
-    if(right < -speed_params.Slow) right = -speed_params.Slow;
+    if(left_speed > 100) left_speed = 100;
+    if(left_speed < -100) left_speed = -100;
+    if(right_speed > 100) right_speed = 100;
+    if(right_speed < -100) right_speed = -100;
     
-    Speed_SetTarget(left, right);
+    // 直接设置电机速度
+    Motor_SetSpeeds((int8_t)left_speed, (int8_t)right_speed);
 }

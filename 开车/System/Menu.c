@@ -14,14 +14,14 @@
 #define MENU_RUNNING 4
 
 //PID
-#define KP 25.0
-#define KI 0.1
-#define KD 15.0
+#define KP 3.0f
+#define KI 0.01f
+#define KD 25.0f
 
 //SPEED
-#define Normal 40
-#define Turn 50
-#define Slow 30
+#define Normal 70
+#define Turn 80
+#define Slow 60
 
 uint8_t menu_state = MENU_MAIN;
 uint8_t menu_index = 0;
