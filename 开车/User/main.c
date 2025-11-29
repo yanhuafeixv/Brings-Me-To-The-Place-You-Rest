@@ -31,6 +31,6 @@ int main(void)
             Speed_PID_Update();  // ¸üÐÂPID¿ØÖÆ
         }
         
-        Delay_ms(50);
+        Delay_ms(10);
 		}
 }

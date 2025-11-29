@@ -198,12 +198,12 @@ void Speed_TrackingControl(uint16_t track_status)
     // 根据传感器状态设置目标速度
     switch(track_status) {
         case 0:     // 0000 - 停止
-            left = 0;
-            right = 0;
+            left = -10;
+            right = -10;
             break;
         case 1:     // 0001 - 大右转
             left = speed_params.Turn;
-            right = -speed_params.Turn;
+            right = 0;
             break;
         case 10:    // 0010 - 轻微右转
             left = speed_params.Normal + 15;
@@ -222,7 +222,7 @@ void Speed_TrackingControl(uint16_t track_status)
             right = speed_params.Normal;
             break;
         case 1000:  // 1000 - 大左转
-            left = -speed_params.Turn;
+            left = 0;
             right = speed_params.Turn;
             break;
         case 1100:  // 1100 - 急左转

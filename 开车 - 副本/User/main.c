@@ -29,7 +29,7 @@ int main(void)
     
     while(1) {
         OLED_Menu_Process();
-			Time_Increment(); 
+			
         
         if(start_flag) {
             uint8_t status = Track_GetStatus();

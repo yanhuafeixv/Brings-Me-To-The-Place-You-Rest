@@ -73,7 +73,7 @@ void OLED_Menu_Init(void)
 
 void Key_Scan(void)
 {
-    static uint8_t last_states[4] = {1, 1, 1, 1};
+    uint8_t last_states[4] = {1, 1, 1, 1};
     uint8_t current_states[4];
     
     current_states[0] = GPIO_ReadInputDataBit(GPIOA, KEY_OK_PIN);
